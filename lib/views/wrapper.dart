@@ -1,7 +1,6 @@
 import 'package:demo_app/authenticate/authenticate.dart';
 import 'package:demo_app/models/user.dart';
 import 'package:demo_app/views/home.dart';
-import 'package:demo_app/views/student_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:demo_app/services/auth.dart';

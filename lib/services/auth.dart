@@ -16,19 +16,23 @@ User _userFromFirebaseUser(FirebaseUser user){
   return user != null ? User(uid: user.uid) : null;
 }
 
-// get UID
+// get current UID
 Future<String> getCurrentUID() async{
-  return (await _auth.currentUser()).uid;
+  final FirebaseUser user = await _auth.currentUser();
+  final String uid = user.uid;
+  return uid;
 }
 
 // get current USER
 Future getCurrentUser() async{
-  return await _auth.currentUser;
+  return await _auth.currentUser();
 }
 
 // get profile image
 getProfileImage() async{
   FirebaseUser user = await _auth.currentUser();
+  await user.reload();
+  user = await _auth.currentUser();
   if(user.photoUrl != null){
     return NetworkImage(user.photoUrl);
   }

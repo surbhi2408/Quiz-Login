@@ -1,7 +1,6 @@
 import 'package:demo_app/services/auth.dart';
 import 'package:demo_app/shared/loading.dart';
 import 'package:demo_app/views/home.dart';
-import 'package:demo_app/views/student_profile.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -109,7 +108,7 @@ class _SignInState extends State<SignIn> {
                 onTap: (){
                   gogleSignIn().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(
                       builder: (_){
-                        return StudentProfile();
+                        return Home();
                       })));
                 },
                 child: Container(

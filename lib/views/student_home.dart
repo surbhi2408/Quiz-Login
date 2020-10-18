@@ -2,6 +2,7 @@ import 'package:demo_app/main.dart';
 import 'package:demo_app/services/auth.dart';
 import 'package:demo_app/views/images.dart';
 import 'package:demo_app/views/show_details.dart';
+import 'package:demo_app/views/update_info.dart';
 import 'package:flutter/material.dart';
 
 class StudentHome extends StatefulWidget {
@@ -17,6 +18,21 @@ class _StudentHomeState extends State<StudentHome> {
 
   String uid;
   _StudentHomeState({this.uid});
+
+  void _updateInfo(context, uid){
+    showModalBottomSheet(
+      context: context,
+      builder: (context){
+        return SingleChildScrollView(
+          child: Container(
+            height: 1000,
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+            child: SettingForm(uid: uid),
+          ),
+        );
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +61,10 @@ class _StudentHomeState extends State<StudentHome> {
             ShowDetails(uid: uid,),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.mode_edit),
+        onPressed: () => _updateInfo(context, uid),
       ),
     );
   }

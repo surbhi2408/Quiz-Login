@@ -1,8 +1,10 @@
 import 'dart:io';
-
 import 'package:demo_app/models/user.dart';
 import 'package:demo_app/services/database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ShowDetails extends StatefulWidget {
 
@@ -22,6 +24,28 @@ class _ShowDetailsState extends State<ShowDetails> {
 
   File _imageFile;
 
+  Future _getImage(BuildContext context,ImageSource source) async{
+    ImagePicker.pickImage(source: source, maxWidth: 400.0).then((File image){
+      setState(() {
+        _imageFile = image;
+      });
+      Navigator.pop(context);
+    });
+  }
+
+  Future uploadPic(BuildContext context) async {
+    fileName = basename(_imageFile.path);
+    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
+    StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    
+    setState(() {
+      print("Profile Picture Uploaded");
+      print(_imageFile);
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Profile Picture Uploaded'),));
+    });
+  }
+
   void _openImagePicker(BuildContext context){
     showModalBottomSheet(
       context: context,
@@ -31,7 +55,36 @@ class _ShowDetailsState extends State<ShowDetails> {
           padding: EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
-              Text("")
+              Text(
+                "Pick an Image",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10.0,),
+              FlatButton(
+                child: Text(
+                  "Use Camera",
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
+                onPressed: (){
+                  _getImage(context, ImageSource.camera);
+                },
+              ),
+              SizedBox(height: 5.0,),
+              FlatButton(
+                onPressed: (){
+                  _getImage(context, ImageSource.gallery);
+                },
+                child: Text(
+                  "From Gallery",
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
+              )
             ],
           ),
         );
@@ -78,7 +131,17 @@ class _ShowDetailsState extends State<ShowDetails> {
                     label: Text(""),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: FlatButton(
+                    child: Text("ADD PHOTO"),
+                    onPressed: (){
+                      uploadPic(context);
+                    },
+                  ),
+                ),
                 SizedBox(height: 20.0,),
+
                 Text(
                     "Your UID: ${uid}",
                 ),
@@ -106,6 +169,9 @@ class _ShowDetailsState extends State<ShowDetails> {
               ],
             ),
           );
+        }
+        else{
+          return Container(child: Text("You got an error"),);
         }
       },
     );

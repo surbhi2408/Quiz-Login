@@ -50,13 +50,11 @@ class DatabaseService{
     );
   }
 
-  Stream<List<User_Data>> get userData{
-    return userCollection.snapshots()
-        .map(_userDataDetailFromSnapshot);
+  Stream<List<User_Data>> get user_Data {
+    return userCollection.snapshots().map(_userDataDetailFromSnapshot);
   }
 
-  Stream<UserData> get users_data{
-    return userCollection.document(uid).snapshots()
-        .map(_userDataFromSnapshot);
+  Stream<UserData> get userData {
+    return userCollection.document(uid).snapshots().map(_userDataFromSnapshot);
   }
 }

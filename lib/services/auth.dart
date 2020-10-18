@@ -12,91 +12,91 @@ String phoneNo = '';
 String imageUrl = '';
 String id = '';
 
-User _userFromFirebaseUser(FirebaseUser user){
-  return user != null ? User(uid: user.uid) : null;
-}
-
-// get current UID
-Future<String> getCurrentUID() async{
-  final FirebaseUser user = await _auth.currentUser();
-  final String uid = user.uid;
-  return uid;
-}
-
-// get current USER
-Future getCurrentUser() async{
-  return await _auth.currentUser();
-}
-
-// get profile image
-getProfileImage() async{
-  FirebaseUser user = await _auth.currentUser();
-  await user.reload();
-  user = await _auth.currentUser();
-  if(user.photoUrl != null){
-    return NetworkImage(user.photoUrl);
-  }
-  else{
-    return Icon(Icons.account_circle, size: 100,);
-  }
-}
-
-// auth change user stream
-Stream<User> get user{
-  return _auth.onAuthStateChanged
-      .map(_userFromFirebaseUser);
-}
-
-// sign in anonymously
-Future signInAnon() async{
-  try{
-    AuthResult result = await _auth.signInAnonymously();
-    FirebaseUser user = result.user;
-    return _userFromFirebaseUser(user);
-  }catch(e){
-    print(e.toString());
-    return null;
-  }
-}
-
-// sign in with email & password
-Future signInWithEmailAndPassword(String email,String password) async{
-  try{
-    AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    FirebaseUser user = result.user;
-
-    return _userFromFirebaseUser(user);
-  }catch(e){
-    print(e.toString());
-    return null;
-  }
-}
-
-// register with email and password
-Future registerWithEmailAndPassword(String email,String password) async{
-  try{
-    AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    FirebaseUser user = result.user;
-
-    // create a new document for the user with the uid
-    // await DatabaseService(uid: user.uid).updateUserData(user.displayName,user.phoneNumber,user.photoUrl,"20184061","CSE","female");
-
-    return _userFromFirebaseUser(user);
-  }catch(e){
-    print(e.toString());
-    return null;
-  }
-}
-
-// sign out
-Future signOut() async{
-  try{
-    return await _auth.signOut();
-  }catch(e){
-    print(e.toString());
-    return null;
-  }
-}
+// User _userFromFirebaseUser(FirebaseUser user){
+//   return user != null ? User(uid: user.uid) : null;
+// }
+//
+// // get current UID
+// Future<String> getCurrentUID() async{
+//   final FirebaseUser user = await _auth.currentUser();
+//   final String uid = user.uid;
+//   return uid;
+// }
+//
+// // get current USER
+// Future getCurrentUser() async{
+//   return await _auth.currentUser();
+// }
+//
+// // get profile image
+// getProfileImage() async{
+//   FirebaseUser user = await _auth.currentUser();
+//   await user.reload();
+//   user = await _auth.currentUser();
+//   if(user.photoUrl != null){
+//     return NetworkImage(user.photoUrl);
+//   }
+//   else{
+//     return Icon(Icons.account_circle, size: 100,);
+//   }
+// }
+//
+// // auth change user stream
+// Stream<User> get user{
+//   return _auth.onAuthStateChanged
+//       .map(_userFromFirebaseUser);
+// }
+//
+// // sign in anonymously
+// Future signInAnon() async{
+//   try{
+//     AuthResult result = await _auth.signInAnonymously();
+//     FirebaseUser user = result.user;
+//     return _userFromFirebaseUser(user);
+//   }catch(e){
+//     print(e.toString());
+//     return null;
+//   }
+// }
+//
+// // sign in with email & password
+// Future signInWithEmailAndPassword(String email,String password) async{
+//   try{
+//     AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+//     FirebaseUser user = result.user;
+//
+//     return _userFromFirebaseUser(user);
+//   }catch(e){
+//     print(e.toString());
+//     return null;
+//   }
+// }
+//
+// // register with email and password
+// Future registerWithEmailAndPassword(String email,String password) async{
+//   try{
+//     AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+//     FirebaseUser user = result.user;
+//
+//     // create a new document for the user with the uid
+//     // await DatabaseService(uid: user.uid).updateUserData(user.displayName,user.phoneNumber,user.photoUrl,"20184061","CSE","female");
+//
+//     return _userFromFirebaseUser(user);
+//   }catch(e){
+//     print(e.toString());
+//     return null;
+//   }
+// }
+//
+// // sign out
+// Future signOut() async{
+//   try{
+//     return await _auth.signOut();
+//   }catch(e){
+//     print(e.toString());
+//     return null;
+//   }
+// }
 
 
 Future<String> gogleSignIn() async {
@@ -130,8 +130,7 @@ Future<String> gogleSignIn() async {
     phoneNo = user.phoneNumber;
     imageUrl = user.photoUrl;
 
-    await DatabaseService(uid: user.uid).updateUserData(
-        name, phoneNo, imageUrl, "20184061", "CSE", "female");
+    await DatabaseService(uid: user.uid).updateUserData(name, phoneNo, imageUrl, "your regNo", "Your branch", "your gender");
 
     print("Username: ${user.uid}");
     return '${user}';
